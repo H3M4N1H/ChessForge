@@ -9,7 +9,7 @@ export class StockfishEngine {
 			this.worker = new Worker('/stockfish/stockfish-18-lite-single.js');
 
 			this.worker.onmessage = (event: MessageEvent) => {
-				const line: string = typeof event.data === 'string' ? event.data : String(event);
+				const line: string = typeof event.data === 'string' ? event.data : String(event.data);
 				this.listeners.forEach((cb) => cb(line));
 			};
 

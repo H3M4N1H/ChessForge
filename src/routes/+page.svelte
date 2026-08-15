@@ -26,6 +26,7 @@
 	let showPromotion = $state(false);
 	let pendingPromotion: { from: string; to: string } | null = $state(null);
 	let resigned = $state(false);
+	let resignedColor = $state<'white' | 'black'>('white');
 
 	// AI
 	let stockfish: StockfishEngine | null = null;
@@ -197,6 +198,7 @@
 	function resign() {
 		if (gameState.isEnd || resigned) return;
 		resigned = true;
+		resignedColor = opponent === 'local' ? gameState.turnColor : playerColor;
 		if (opponent === 'online') {
 			peer?.send({ type: 'resign' });
 		}
@@ -255,6 +257,7 @@
 				}
 				case 'resign':
 					resigned = true;
+					resignedColor = playerColor === 'white' ? 'black' : 'white';
 					break;
 				case 'takeback-request':
 					takebackIncoming = true;
@@ -348,11 +351,7 @@
 		{ role: 'knight' as const, symbol: '♞' }
 	];
 
-	function isMyTurn(): boolean {
-		if (opponent === 'online') return gameState.turnColor === playerColor;
-		if (opponent === 'ai') return gameState.turnColor === playerColor;
-		return true;
-	}
+
 </script>
 
 <div class="page">
@@ -504,7 +503,7 @@
 					{/if}
 				</div>
 
-				<GameInfo state={gameState} {resigned} resignedColor={opponent === 'local' ? gameState.turnColor : playerColor} />
+				<GameInfo state={gameState} {resigned} resignedColor={resignedColor} />
 			</div>
 		</div>
 	{:else if view === 'editor'}

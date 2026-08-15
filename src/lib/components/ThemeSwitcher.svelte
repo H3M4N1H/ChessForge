@@ -38,10 +38,13 @@
 	};
 
 	// Applied = what's currently on the board. Selected = what user is previewing.
-	let appliedPieceSet = $state('staunty');
-	let appliedBoard = $state('blue');
-	let selectedPieceSet = $state('staunty');
-	let selectedBoard = $state('blue');
+	const savedPieces = typeof localStorage !== 'undefined' ? localStorage.getItem('chess-piece-set') ?? 'staunty' : 'staunty';
+	const savedBoard = typeof localStorage !== 'undefined' ? localStorage.getItem('chess-board-theme') ?? 'blue' : 'blue';
+
+	let appliedPieceSet = $state(savedPieces);
+	let appliedBoard = $state(savedBoard);
+	let selectedPieceSet = $state(savedPieces);
+	let selectedBoard = $state(savedBoard);
 
 	let hasChanges = $derived(
 		selectedPieceSet !== appliedPieceSet || selectedBoard !== appliedBoard
@@ -77,6 +80,8 @@
 		if (board) applyBoardTheme(board);
 		appliedPieceSet = selectedPieceSet;
 		appliedBoard = selectedBoard;
+		localStorage.setItem('chess-piece-set', appliedPieceSet);
+		localStorage.setItem('chess-board-theme', appliedBoard);
 	}
 
 	onMount(() => {

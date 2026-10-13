@@ -29,7 +29,7 @@ A chess platform with a built-in board editor, multiple themes, and Chess960 sup
 
 ```bash
 # Clone
-git clone https://github.com/Dreadonyx/ChessForge.git
+git clone https://github.com/H3M4N1H/ChessForge.git
 cd ChessForge
 
 # Install
